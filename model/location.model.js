@@ -20,7 +20,6 @@ const locationSchema=new Schema({
     video:{
         type: Schema.ObjectId,
         ref: 'Media',
-        required: true
     },
     screenPixel:{
         type:String,
@@ -48,7 +47,7 @@ function validate(location){
         address:Joi.string().required(),
         image:Joi.string().required(),
         locationImage:Joi.string().required(),
-        video:Joi.string().required(),
+        video:Joi.string(),
         screenPixel:Joi.string().required(),
         fromHour:Joi.string().required(),
         toHour:Joi.string().required(),
