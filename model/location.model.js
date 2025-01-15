@@ -33,6 +33,10 @@ const locationSchema=new Schema({
         type:String,
         required:true
     },
+    passportID:{
+        type:String,
+        required:true
+    },
 },{
     timestamps:true
 })
@@ -51,6 +55,7 @@ function validate(location){
         screenPixel:Joi.string().required(),
         fromHour:Joi.string().required(),
         toHour:Joi.string().required(),
+        passportID:Joi.string().required(),
     })
 
     return locationValid.validate(location)

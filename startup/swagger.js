@@ -21,7 +21,7 @@ const swaggerOptions = {
 
                 Location: {
                     type: 'object',
-                    required: ['address', 'image', 'locationImage','video','screenPixel','fromHour','toHour'],
+                    required: ['address', 'image', 'locationImage','video','screenPixel','fromHour','toHour','passportID'],
                     properties: {
                         address: {type: 'string', description: 'Name of the user'},
                         image: {type: 'string', description: 'Login of the user'},
@@ -30,6 +30,7 @@ const swaggerOptions = {
                         screenPixel: {type: 'string', description: 'Password for the user account'},
                         fromHour: {type: 'string', description: 'Password for the user account'},
                         toHour: {type: 'string', description: 'Password for the user account'},
+                        passportID: {type: 'string', description: 'Password for the user account'},
                     },
                 },
 
