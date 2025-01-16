@@ -10,16 +10,13 @@ const locationSchema=new Schema({
     image: {
         type: Schema.ObjectId,
         ref: 'Media',
-        required: true
     },
     locationImage:{
         type: Schema.ObjectId,
         ref: 'Media',
-        required: true
     },
     video:{
         type: Schema.ObjectId,
-        ref: 'Media',
     },
     screenPixel:{
         type:String,
@@ -53,9 +50,9 @@ const Location=model('Location',locationSchema)
 function validate(location){
     const locationValid=Joi.object({
         address:Joi.string().required(),
-        image:Joi.string().required(),
-        locationImage:Joi.string().required(),
-        video:Joi.string(),
+        image:Joi.string().empty(""),
+        locationImage:Joi.string().empty(""),
+        video:Joi.string().empty(""),
         screenPixel:Joi.string().required(),
         fromHour:Joi.string().required(),
         toHour:Joi.string().required(),
