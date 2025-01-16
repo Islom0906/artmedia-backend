@@ -19,5 +19,6 @@ export default (app) => {
     app.use('/api/auth', authRouter)
     app.use('/api/location', locationRouter)
     app.use('/api/statistics', statisticsRouter)
+
     app.use(error);
 };
