@@ -54,7 +54,7 @@ const upload = multer({ storage, fileFilter });
  *               items:
  *                 $ref: '#/components/schemas/Media'
  */
-router.get('/',[auth,admin], async (req, res) => {
+router.get('/',[auth], async (req, res) => {
     try {
         const medias = await Media.find();
         res.send(medias);

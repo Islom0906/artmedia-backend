@@ -13,10 +13,12 @@ export const calculatorStatistics = (location, statistics) => {
         workingDayMonth,
         offDayMonth,
         dayOffStatistics,
-        monthViewsSeconds
+        monthViewsSeconds,
+        month,
+        price
     } = statistics
     const workingSecondsInDay = (Number(location.fromHour.split(":")[0]) - Number(location.toHour.split(":")[0]))*60*60*(workingDayMonth+offDayMonth)
-    console.log(workingSecondsInDay)
+
     const allViews = young + middleAge + oldAge
     let sumViewsWorkingDay = 0
     let sumViewsOffDay = 0
@@ -75,6 +77,9 @@ export const calculatorStatistics = (location, statistics) => {
         viewsMonthSeconds:{
             otherSeconds:workingSecondsInDay-monthViewsSeconds,
             viewSecond:monthViewsSeconds
-        }
+        },
+        allViews,
+        month,
+        price
     }
 }
