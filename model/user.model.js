@@ -16,11 +16,15 @@ const userSchema=new Schema({
         type:String,
         required:true
     },
+    role:{
+        type:String,
+        required:true
+    }
 
 })
 
 userSchema.methods.generateAuthToken=function (user){
-    return jwt.sign({_id:user._id},process.env.JWT_PRIVATE_KEY,{expiresIn: '5h'})
+    return jwt.sign({_id:user._id,role:user.role},process.env.JWT_PRIVATE_KEY,{expiresIn: '5h'})
 }
 
 
@@ -31,6 +35,7 @@ function validate(user){
         name:Joi.string().required(),
         login:Joi.string().required(),
         password:Joi.string().required(),
+        role:Joi.string().required(),
     })
 
     return userValid.validate(user)

@@ -5,6 +5,7 @@ import { Media } from '../model/media.model.js';
 import deleteMedias from '../utils/deleteMedias.js';
 import path from 'path';
 import {auth} from '../middleware/auth.js'
+import {admin} from "../middleware/role.js";
 
 const router = express.Router();
 
@@ -53,7 +54,7 @@ const upload = multer({ storage, fileFilter });
  *               items:
  *                 $ref: '#/components/schemas/Media'
  */
-router.get('/',auth, async (req, res) => {
+router.get('/',[auth,admin], async (req, res) => {
     try {
         const medias = await Media.find();
         res.send(medias);

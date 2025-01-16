@@ -158,11 +158,12 @@ const swaggerOptions = {
 
                 User: {
                     type: 'object',
-                    required: ['name', 'login', 'password'],
+                    required: ['name', 'login', 'password','role'],
                     properties: {
                         name: {type: 'string', description: 'Name of the user'},
                         login: {type: 'string', description: 'Login of the user'},
                         password: {type: 'string', description: 'Password for the user account'},
+                        role: {type: 'string', description: 'Password for the user account'},
                     },
                 },
 

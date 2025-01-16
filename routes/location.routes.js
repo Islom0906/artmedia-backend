@@ -89,6 +89,43 @@ router.get('/:id', async (req, res) => {
             .populate('image', ' -name -__v')
             .populate('locationImage', ' -name -__v')
             .populate('video', ' -name -__v')
+        if (!location) {
+            return res.status(404).json({message: 'Location not found'});
+        }
+        res.status(200).json(location);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
+/**
+ * @swagger
+ * /api/location/calculator/{id}:
+ *   get:
+ *     summary: Get a location item by ID
+ *     tags: [Location]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Location ID
+ *     responses:
+ *       200:
+ *         description: Location item found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Location'
+ *       404:
+ *         description: Location not found
+ */
+router.get('/calculator:id', async (req, res) => {
+    try {
+        const location = await Location.findById(req.params.id)
+            .populate('image', ' -name -__v')
+            .populate('locationImage', ' -name -__v')
+            .populate('video', ' -name -__v')
         const statistics=await Statistics.findOne({locationId:req.params.id})
         const calculateStatistics=calculatorStatistics(location,statistics)
         console.log(calculateStatistics)

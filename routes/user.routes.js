@@ -94,10 +94,10 @@ router.post('/',async (req,res)=>{
         return res.status(400).send(error.details[0].message)
     }
 
-    let user=await User.findOne({email:req.body.email})
+    let user=await User.findOne({login:req.body.login})
 
     if (user){
-        return res.status(400).send('Bu email bilan ro\'yxatdan o\'tilgan' )
+        return res.status(400).send('Bu login bilan ro\'yxatdan o\'tilgan' )
     }
     try{
 
@@ -109,7 +109,7 @@ router.post('/',async (req,res)=>{
 
         let userSave=await User.create(user)
 
-        res.send(_.pick(userSave,['_id','name','email','isAdmin']))
+        res.send(_.pick(userSave,['_id','name','login','role']))
     } catch (error){
         res.send(error)
     }
