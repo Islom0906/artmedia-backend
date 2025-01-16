@@ -11,7 +11,7 @@ import statisticsRouter from '../routes/statistics.routes.js'
 export default (app) => {
     const imagesFolderPath = path.join(path.resolve());
 
-    // app.use(cors());
+    app.use(cors());
     app.use('/api/', express.static(imagesFolderPath));
     app.use(express.json());
     app.use('/api/media', mediaRouter);
