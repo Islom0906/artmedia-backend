@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import winston from 'winston';
-import './startup/loggin.js';
+import loggin from './startup/loggin.js';
 import setupSwagger from './startup/swagger.js';
 import startupDb from './startup/db.js';
 import startupRoutes from './startup/routes.js';
@@ -11,6 +11,7 @@ const app = express();
 
 
 dotenv.config();
+loggin()
 setupSwagger(app);
 startupRoutes(app);
 startupDb();
