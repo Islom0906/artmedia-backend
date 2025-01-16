@@ -167,10 +167,10 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message)
     }
 
-    const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
-    if (!ValidId) {
-        return res.status(400).send('Mavjud bo\'lmagan id')
-    }
+    // const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
+    // if (!ValidId) {
+    //     return res.status(400).send('Mavjud bo\'lmagan id')
+    // }
 
 
     try {
