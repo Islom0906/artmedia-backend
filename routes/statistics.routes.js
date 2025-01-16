@@ -1,10 +1,8 @@
 import express from "express";
-import {Location, validate} from '../model/location.model.js';
+import {Statistics, validate} from '../model/statistics.model.js';
 import validId from '../middleware/validId.js';
 import {auth} from '../middleware/auth.js';
 import isValidIdBody from "../utils/isValidIdBody.js";
-import {Statistics} from "../model/statistics.model.js";
-import {calculatorStatistics} from "../utils/calculatorStatistics.js";
 
 
 const router = express.Router();
@@ -18,10 +16,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/location:
+ * /api/statistics:
  *   get:
  *     summary: Get all location with pagination
- *     tags: [Location]
+ *     tags: [Statistics]
  *     responses:
  *       200:
  *         description: List of location with pagination
@@ -33,7 +31,7 @@ const router = express.Router();
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Location'
+ *                     $ref: '#/components/schemas/Statistics'
  *                 currentPage:
  *                   type: integer
  *                 totalPages:
@@ -47,13 +45,11 @@ const router = express.Router();
  */
 router.get('/', auth,async (req, res) => {
     try {
-        const location = await Location.find()
-            .populate('image', ' -name -__v')
-            .populate('locationImage', ' -name -__v')
-            .populate('video', ' -name -__v')
+        const statistics = await Statistics.find()
 
 
-        res.status(200).json(location);
+
+        res.status(200).json(statistics);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -62,40 +58,35 @@ router.get('/', auth,async (req, res) => {
 
 /**
  * @swagger
- * /api/location/{id}:
+ * /api/statistics/{id}:
  *   get:
- *     summary: Get a location item by ID
- *     tags: [Location]
+ *     summary: Get a statistics item by ID
+ *     tags: [Statistics]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Location ID
+ *         description: Statistics ID
  *     responses:
  *       200:
- *         description: Location item found
+ *         description: Statistics item found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Location'
+ *               $ref: '#/components/schemas/Statistics'
  *       404:
- *         description: Location not found
+ *         description: Statistics not found
  */
 router.get('/:id', async (req, res) => {
     try {
-        const location = await Location.findById(req.params.id)
-            .populate('image', ' -name -__v')
-            .populate('locationImage', ' -name -__v')
-            .populate('video', ' -name -__v')
-        const statistics=await Statistics.findOne({locationId:req.params.id})
-        const calculateStatistics=calculatorStatistics(location,statistics)
-        console.log(calculateStatistics)
-        if (!location) {
-            return res.status(404).json({message: 'Location not found'});
+        const statistics = await Statistics.findById(req.params.id)
+
+        if (!statistics) {
+            return res.status(404).json({message: 'Statistics not found'});
         }
-        res.status(200).json(location);
+        res.status(200).json(statistics);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -104,23 +95,23 @@ router.get('/:id', async (req, res) => {
 
 /**
  * @swagger
- * /api/location:
+ * /api/statistics:
  *   post:
- *     summary: Create a new location item
- *     tags: [Location]
+ *     summary: Create a new statistics item
+ *     tags: [Statistics]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/Statistics'
  *     responses:
  *       201:
- *         description: Location created successfully
+ *         description: Statistics created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Location'
+ *               $ref: '#/components/schemas/Statistics'
  *       400:
  *         description: Validation error
  */
@@ -130,15 +121,12 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message)
     }
 
-    const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
-    if (!ValidId) {
-        return res.status(400).send('Mavjud bo\'lmagan id')
-    }
+
 
 
     try {
-        const location = await Location.create(req.body)
-        res.status(201).send(location)
+        const statistics = await Statistics.create(req.body)
+        res.status(201).send(statistics)
 
     } catch (error) {
         res.send(error.message)
@@ -148,32 +136,32 @@ router.post('/', auth, async (req, res) => {
 
 /**
  * @swagger
- * /api/location/{id}:
+ * /api/statistics/{id}:
  *   put:
- *     summary: Update a location item by ID
- *     tags: [Location]
+ *     summary: Update a statistics item by ID
+ *     tags: [Statistics]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Location ID
+ *         description: Statistics ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/Statistics'
  *     responses:
  *       200:
- *         description: Location updated successfully
+ *         description: Statistics updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Location'
+ *               $ref: '#/components/schemas/Statistics'
  *       404:
- *         description: Location not found
+ *         description: Statistics not found
  */
 router.put('/:id', [auth, validId], async (req, res) => {
 
@@ -183,17 +171,14 @@ router.put('/:id', [auth, validId], async (req, res) => {
     }
 
 
-    const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
-    if (!ValidId) {
-        return res.status(400).send('Mavjud bo\'lmagan id')
-    }
-    try {
-        const location = await Location.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
-        if (!location) {
+    try {
+        const statistics = await Statistics.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+        if (!statistics) {
             return res.status(404).send('Berilgan ID bo\'yicha malumot topilmadi')
         }
-        res.send(location)
+        res.send(statistics)
 
     } catch (error) {
         res.send(error.message)
@@ -203,20 +188,20 @@ router.put('/:id', [auth, validId], async (req, res) => {
 
 /**
  * @swagger
- * /api/location/{id}:
+ * /api/statistics/{id}:
  *   delete:
- *     summary: Delete a location item by ID
- *     tags: [Location]
+ *     summary: Delete a statistics item by ID
+ *     tags: [Statistics]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Location ID
+ *         description: Statistics ID
  *     responses:
  *       200:
- *         description: Location deleted successfully
+ *         description: Statistics deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -226,22 +211,17 @@ router.put('/:id', [auth, validId], async (req, res) => {
  *                   type: string
  *                   description: Confirmation message
  *       404:
- *         description: Location not found
+ *         description: Statistics not found
  */
 router.delete('/:id', [auth, validId], async (req, res) => {
     try {
-        const location = await Location.findByIdAndDelete(req.params.id);
-        if (!location) {
+        const statistics = await Statistics.findByIdAndDelete(req.params.id);
+        if (!statistics) {
             return res.status(404).send('Berilgan ID bo\'yicha malumot topilmadi');
         }
 
 
-        // const imagesId = location.image.map(id => new mongoose.Types.ObjectId(id));
-        // const getDeleteImages = await Media.find({'_id': {$in: imagesId}});
-        // await Media.deleteMany({_id: {$in: imagesId}});
-        // await deleteMedias(getDeleteImages);
-        //
-        res.send(location);
+        res.send(statistics);
     } catch (error) {
         res.send(error.message);
     }
