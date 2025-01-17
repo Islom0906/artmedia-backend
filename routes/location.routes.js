@@ -4,7 +4,7 @@ import validId from '../middleware/validId.js';
 import {auth} from '../middleware/auth.js';
 import isValidIdBody from "../utils/isValidIdBody.js";
 import {Statistics} from "../model/statistics.model.js";
-import {calculatorStatistics} from "../utils/calculatorStatistics.js";
+import calculatorStatistics from "../utils/calculatorStatistics.js";
 
 
 const router = express.Router();
@@ -83,7 +83,7 @@ router.get('/', auth,async (req, res) => {
  *       404:
  *         description: Location not found
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth,async (req, res) => {
     try {
         const location = await Location.findById(req.params.id)
             .populate('image', ' -name -__v')
@@ -120,23 +120,28 @@ router.get('/:id', async (req, res) => {
  *       404:
  *         description: Location not found
  */
-// router.get('/calculator/:id', async (req, res) => {
-//     try {
-//         const location = await Location.findById(req.params.id)
-//             .populate('image', ' -name -__v')
-//             .populate('locationImage', ' -name -__v')
-//             .populate('video', ' -name -__v')
-//         const statistics=await Statistics.findOne({locationId:req.params.id})
-//         const calculateStatistics=calculatorStatistics(location,statistics)
-//         console.log(calculateStatistics)
-//         if (!location) {
-//             return res.status(404).json({message: 'Location not found'});
-//         }
-//         res.status(200).json(location);
-//     } catch (error) {
-//         res.status(500).json({message: error.message});
-//     }
-// });
+router.get('/calculator/:id', auth,async (req, res) => {
+    try {
+        const location = await Location.findById(req.params.id)
+            .select('-createdAt -updatedAt -__v')
+            .populate('image', ' -name -__v')
+            .populate('locationImage', ' -name -__v')
+            .populate('video', ' -name -__v')
+            .lean()
+        const statistics=await Statistics.findOne({locationId:req.params.id})
+        const calculateStatistics=calculatorStatistics(location,statistics)
+        const data={
+            ...location,
+            statistics:calculateStatistics
+        }
+        if (!location) {
+            return res.status(404).json({message: 'Location not found'});
+        }
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 
 /**

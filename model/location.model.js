@@ -22,6 +22,10 @@ const locationSchema=new Schema({
         type:String,
         required:true
     },
+    screenSize:{
+        type:String,
+        required:true
+    },
     fromHour:{
         type:String,
         required:true
@@ -54,6 +58,7 @@ function validate(location){
         locationImage:Joi.string().empty(""),
         video:Joi.string().empty(""),
         screenPixel:Joi.string().required(),
+        screenSize:Joi.string().required(),
         fromHour:Joi.string().required(),
         toHour:Joi.string().required(),
         passportID:Joi.string().required(),

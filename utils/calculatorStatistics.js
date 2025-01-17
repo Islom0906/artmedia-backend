@@ -1,5 +1,4 @@
-export const calculatorStatistics = (location, statistics) => {
-
+const calculatorStatistics = (location, statistics) => {
     const {
         young,
         middleAge,
@@ -15,9 +14,13 @@ export const calculatorStatistics = (location, statistics) => {
         dayOffStatistics,
         monthViewsSeconds,
         month,
-        price
+        price, nightVision
     } = statistics
-    const workingSecondsInDay = (Number(location.fromHour.split(":")[0]) - Number(location.toHour.split(":")[0]))*60*60*(workingDayMonth+offDayMonth)
+
+
+    const workingSecondsInMonth = (Number(location.fromHour.split(":")[0]) - Number(location.toHour.split(":")[0])) * 60 * 60 * (workingDayMonth + offDayMonth)
+    const otherSecondsPercent = Math.round((((workingSecondsInMonth - monthViewsSeconds) * 100) / workingSecondsInMonth) * 10) / 10
+
 
     const allViews = young + middleAge + oldAge
     let sumViewsWorkingDay = 0
@@ -31,7 +34,6 @@ export const calculatorStatistics = (location, statistics) => {
         sumViewsOffDay += offDay.viewsNumber * offDayMonth
     })
     // working day
-
     const workingDaysStatistic = workingDayStatistics.map(working => {
         return {
             hour: working.hour,
@@ -49,7 +51,53 @@ export const calculatorStatistics = (location, statistics) => {
             viewsNumberMonthPercent: Math.round((offDay.viewsNumber * offDayMonth * 100) / sumViewsOffDay),
         }
     })
+
+    const percentMinus = (number, percent) => {
+        const percentage = percent / 100;
+        const valueToSubtract = number * percentage;
+        return number - valueToSubtract
+    }
+
+
+    // working day my views
+    const workingDaysStatisticInMyVideo = workingDaysStatistic.map(working => {
+
+        return {
+            hour: working.hour,
+            viewsNumberDayMyVideo: Math.round(percentMinus(working.viewsNumberDay, otherSecondsPercent)),
+            viewsNumberMonthMyVideo: Math.round(percentMinus(working.viewsNumberMonth, otherSecondsPercent))
+        }
+    })
+
+    // off day my views
+    const offDaysStatisticInMyVideo = offDaysStatistic.map(offDay => {
+
+        return {
+            hour: offDay.hour,
+            viewsNumberDayMyVideo: Math.round(percentMinus(offDay.viewsNumberDay, otherSecondsPercent)),
+            viewsNumberMonthMyVideo: Math.round(percentMinus(offDay.viewsNumberMonth, otherSecondsPercent))
+        }
+    })
+
+    let sumViewsWorkingDayMyVideo = 0
+    let sumViewsOffDayMyVideo = 0
+    // working day
+    workingDaysStatisticInMyVideo.map(working => {
+        sumViewsWorkingDayMyVideo += working.viewsNumberMonthMyVideo
+    })
+    // off day
+    offDaysStatisticInMyVideo.map(offDay => {
+        sumViewsOffDayMyVideo += offDay.viewsNumberMonthMyVideo
+    })
     return {
+        timeViews: {
+            workingDay: sumViewsWorkingDay,
+            workingDayPercent: Math.round((sumViewsWorkingDay*100)/allViews),
+            offDay: sumViewsOffDay,
+            offDayPercent: Math.round((sumViewsOffDay*100)/allViews),
+            nightVision,
+            nightVisionPercent: Math.round((nightVision*100)/allViews),
+        },
         age: {
             young,
             youngPercent: Math.round((young * 100) / allViews),
@@ -75,11 +123,23 @@ export const calculatorStatistics = (location, statistics) => {
         allViewsWorkingDay: sumViewsWorkingDay,
         allViewOffDay: sumViewsOffDay,
         viewsMonthSeconds:{
-            otherSeconds:workingSecondsInDay-monthViewsSeconds,
-            viewSecond:monthViewsSeconds
+            otherSeconds: workingSecondsInMonth - monthViewsSeconds,
+            viewSeconds: monthViewsSeconds,
+            otherSecondsPercent,
+            viewSecondsPercent: Math.round(((monthViewsSeconds * 100) / workingSecondsInMonth) * 10) / 10
         },
+        workingDaysStatisticInMyVideo,
+        offDaysStatisticInMyVideo,
+        allViewsWorkingDayMyVideo: sumViewsWorkingDayMyVideo,
+        allViewsOffDayMyVideo: sumViewsOffDayMyVideo,
         allViews,
         month,
-        price
+        nightVision,
+        price,
+        monthViewsSeconds,
+        monthViewsMyVideo:sumViewsWorkingDayMyVideo+sumViewsOffDayMyVideo,
+        oneViewsPrice:Math.round(price/(sumViewsWorkingDayMyVideo+sumViewsOffDayMyVideo))
     }
 }
+
+export default calculatorStatistics

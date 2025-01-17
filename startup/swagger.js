@@ -141,13 +141,14 @@ const swaggerOptions = {
                 },
                 Location: {
                     type: 'object',
-                    required: ['address', 'image', 'locationImage','video','screenPixel','fromHour','toHour','passportID','region'],
+                    required: ['address', 'image', 'locationImage','video','screenPixel','fromHour','toHour','passportID','region','screenSize'],
                     properties: {
                         address: {type: 'string', description: 'Name of the user'},
                         image: {type: 'string', description: 'Login of the user'},
                         locationImage: {type: 'string', description: 'Password for the user account'},
                         video: {type: 'string', description: 'Password for the user account'},
                         screenPixel: {type: 'string', description: 'Password for the user account'},
+                        screenSize: {type: 'string', description: 'Password for the user account'},
                         fromHour: {type: 'string', description: 'Password for the user account'},
                         toHour: {type: 'string', description: 'Password for the user account'},
                         passportID: {type: 'string', description: 'Password for the user account'},
