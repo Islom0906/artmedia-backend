@@ -6,6 +6,7 @@ import mediaRouter from '../routes/media.routes.js';
 import userRouter from '../routes/user.routes.js'
 import authRouter from '../routes/auth.routes.js'
 import locationRouter from '../routes/location.routes.js'
+import statisticsRouter from '../routes/statistics.routes.js'
 
 export default (app) => {
     const imagesFolderPath = path.join(path.resolve());
@@ -17,6 +18,6 @@ export default (app) => {
     app.use('/api/user', userRouter)
     app.use('/api/auth', authRouter)
     app.use('/api/location', locationRouter)
-
+    app.use('/api/statistics', statisticsRouter)
     app.use(error);
 };
