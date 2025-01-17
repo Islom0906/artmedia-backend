@@ -84,7 +84,7 @@ router.get('/',auth, async (req, res) => {
  *       200:
  *         description: Media files uploaded successfully.
  */
-router.post('/', [upload.array('media', 10)], async (req, res) => {
+router.post('/', [auth,upload.array('media', 10)], async (req, res) => {
     if (!req.files || req.files.length === 0) {
         return res.status(400).send('Please upload a file.');
     }

@@ -138,8 +138,7 @@ const swaggerOptions = {
                             description: 'Add month'
                         },
                     }
-                }
-                ,
+                },
                 Location: {
                     type: 'object',
                     required: ['address', 'image', 'locationImage','video','screenPixel','fromHour','toHour','passportID','region'],
@@ -155,7 +154,6 @@ const swaggerOptions = {
                         region: {type: 'string', description: 'Password for the user account'},
                     },
                 },
-
                 User: {
                     type: 'object',
                     required: ['name', 'login', 'password'],
@@ -166,7 +164,6 @@ const swaggerOptions = {
                         role: {type: 'string', description: 'Password for the user account'},
                     },
                 },
-
                 Auth: {
                     type: 'object',
                     required: ['login', 'password'],
