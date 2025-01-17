@@ -77,5 +77,10 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export default function setupSwagger(app) {
-    app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    const options = {
+        swaggerOptions: {
+            url: '/api/swagger.json', // Serve the spec as JSON
+        },
+    };
+    app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec,options));
 }
