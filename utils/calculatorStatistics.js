@@ -57,15 +57,25 @@ const calculatorStatistics = (location, statistics) => {
         const valueToSubtract = number * percentage;
         return number - valueToSubtract
     }
+    let sumViewsWorkingDayMyVideo = 0
+    let sumViewsOffDayMyVideo = 0
 
-
+    // working day
+    workingDaysStatistic.map(working => {
+        sumViewsWorkingDayMyVideo += Math.round(percentMinus(working.viewsNumberMonth, otherSecondsPercent))
+    })
+    // off day
+    offDaysStatistic.map(offDay => {
+        sumViewsOffDayMyVideo += Math.round(percentMinus(offDay.viewsNumberMonth, otherSecondsPercent))
+    })
     // working day my views
     const workingDaysStatisticInMyVideo = workingDaysStatistic.map(working => {
 
         return {
             hour: working.hour,
             viewsNumberDayMyVideo: Math.round(percentMinus(working.viewsNumberDay, otherSecondsPercent)),
-            viewsNumberMonthMyVideo: Math.round(percentMinus(working.viewsNumberMonth, otherSecondsPercent))
+            viewsNumberMonthMyVideo: Math.round(percentMinus(working.viewsNumberMonth, otherSecondsPercent)),
+            viewsNumberMonthMyVideoPercent: Math.round((percentMinus(working.viewsNumberMonth, otherSecondsPercent) * 100) / sumViewsWorkingDayMyVideo)
         }
     })
 
@@ -75,20 +85,12 @@ const calculatorStatistics = (location, statistics) => {
         return {
             hour: offDay.hour,
             viewsNumberDayMyVideo: Math.round(percentMinus(offDay.viewsNumberDay, otherSecondsPercent)),
-            viewsNumberMonthMyVideo: Math.round(percentMinus(offDay.viewsNumberMonth, otherSecondsPercent))
+            viewsNumberMonthMyVideo: Math.round(percentMinus(offDay.viewsNumberMonth, otherSecondsPercent)),
+            viewsNumberMonthMyVideoPercent: Math.round((percentMinus(offDay.viewsNumberMonth, otherSecondsPercent) * 100) / sumViewsOffDayMyVideo)
         }
     })
 
-    let sumViewsWorkingDayMyVideo = 0
-    let sumViewsOffDayMyVideo = 0
-    // working day
-    workingDaysStatisticInMyVideo.map(working => {
-        sumViewsWorkingDayMyVideo += working.viewsNumberMonthMyVideo
-    })
-    // off day
-    offDaysStatisticInMyVideo.map(offDay => {
-        sumViewsOffDayMyVideo += offDay.viewsNumberMonthMyVideo
-    })
+
     return {
         timeViews: {
             workingDay: sumViewsWorkingDay,

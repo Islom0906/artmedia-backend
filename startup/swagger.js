@@ -37,7 +37,8 @@ const swaggerOptions = {
                         'monthViewsSeconds',
                         'price',
                         'locationId',
-                        'month'
+                        'month',
+                        "pdf"
                     ],
                     properties: {
                         young: {
@@ -136,6 +137,10 @@ const swaggerOptions = {
                         month: {
                             type: 'string',
                             description: 'Add month'
+                        },
+                        pdf: {
+                            type: 'string',
+                            description: 'Add pdf'
                         },
                     }
                 },

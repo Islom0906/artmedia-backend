@@ -84,7 +84,11 @@ const StatisticsSchema=new Schema({
     month:{
         type:String,
         required:true
-    }
+    },
+    pdf:{
+        type: Schema.ObjectId,
+        ref: 'Media',
+    },
 
 },{
     timestamps:true,
@@ -120,6 +124,7 @@ function validate(Statistics){
         price:Joi.number().required(),
         locationId:Joi.string().required(),
         month:Joi.string().required(),
+        pdf:Joi.string().required()
 
     })
 

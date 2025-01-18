@@ -127,12 +127,11 @@ router.get('/calculator/:id', auth,async (req, res) => {
             .populate('image', ' -name -__v')
             .populate('locationImage', ' -name -__v')
             .populate('video', ' -name -__v')
-            .lean()
+
         const statistics=await Statistics.findOne({locationId:req.params.id})
         const calculateStatistics=calculatorStatistics(location,statistics)
         const data={
-            ...location,
-            statistics:calculateStatistics
+           ...calculateStatistics
         }
         if (!location) {
             return res.status(404).json({message: 'Location not found'});
@@ -172,10 +171,10 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message)
     }
 
-    // const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
-    // if (!ValidId) {
-    //     return res.status(400).send('Mavjud bo\'lmagan id')
-    // }
+    const ValidId = isValidIdBody(req.body.pdf)
+    if (!ValidId) {
+        return res.status(400).send('Mavjud bo\'lmagan id')
+    }
 
 
     try {
@@ -225,7 +224,7 @@ router.put('/:id', [auth, validId], async (req, res) => {
     }
 
 
-    const ValidId = isValidIdBody([req.body.image, req.body.locationImage, req.body.video])
+    const ValidId = isValidIdBody(req.body.pdf)
     if (!ValidId) {
         return res.status(400).send('Mavjud bo\'lmagan id')
     }
