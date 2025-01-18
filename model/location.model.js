@@ -17,6 +17,7 @@ const locationSchema=new Schema({
     },
     video:{
         type: Schema.ObjectId,
+        ref: 'Media',
     },
     screenPixel:{
         type:String,
