@@ -79,7 +79,7 @@ router.get('/', auth,async (req, res) => {
  *       404:
  *         description: Statistics not found
  */
-router.get('/:id', auth,async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const statistics = await Statistics.findById(req.params.id)
 

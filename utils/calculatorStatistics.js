@@ -14,7 +14,7 @@ const calculatorStatistics = (location, statistics) => {
         dayOffStatistics,
         monthViewsSeconds,
         month,
-        price, nightVision
+        price, nightVision,pdf
     } = statistics
 
 
@@ -142,7 +142,8 @@ const calculatorStatistics = (location, statistics) => {
         workingDayMonth,
         offDayMonth,
         monthViewsMyVideo:sumViewsWorkingDayMyVideo+sumViewsOffDayMyVideo,
-        oneViewsPrice:Math.round(price/(sumViewsWorkingDayMyVideo+sumViewsOffDayMyVideo))
+        oneViewsPrice:Math.round(price/(sumViewsWorkingDayMyVideo+sumViewsOffDayMyVideo)),
+        pdf
     }
 }
 
