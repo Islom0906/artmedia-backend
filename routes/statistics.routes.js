@@ -46,6 +46,7 @@ const router = express.Router();
 router.get('/', auth,async (req, res) => {
     try {
         const statistics = await Statistics.find()
+            .populate('pdf','-name -__id')
 
 
 
@@ -82,6 +83,8 @@ router.get('/', auth,async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const statistics = await Statistics.findById(req.params.id)
+            .populate('pdf','-name -__id')
+
 
         if (!statistics) {
             return res.status(404).json({message: 'Statistics not found'});
