@@ -130,7 +130,9 @@ router.get('/calculator/:id', auth,async (req, res) => {
 
         const statistics=await Statistics.findOne({locationId:req.params.id})
             .populate('pdf', ' -name -__v')
-
+if (!statistics){
+    return res.status(404).json({message: 'Statistics topilmadi not found'});
+}
         const calculateStatistics=calculatorStatistics(location,statistics)
         const data={
 
